@@ -59,6 +59,16 @@ app.delete('api/persons/:id', (request, response) => {
   response.status(204).end()
 })
 
+app.post('/api/persons/:name', (request,response) => {
+  const randomPerson = {
+    id: Math.floor(Math.random() * 10000),
+    name: request.params.name,
+    number: `${Math.floor(Math.random() * 99)}-${Math.floor(Math.random() * 99)}-${Math.floor(Math.random() * 100000)}`
+  }
+  persons.push(randomPerson)
+  response.json(randomPerson)
+})
+
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}!`)
 })
