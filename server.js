@@ -4,7 +4,17 @@ const res = require('express/lib/response')
 const app = express()
 const PORT = 8000
 
-const persons = [
+app.use(express.json())
+
+const generateId = () => {
+  const maxId = persons.length > 0
+    ? Math.max(...persons.map(n => n.id))
+    : 0
+  return maxId + 1
+}
+
+
+let persons = [
     { 
       "id": 1,
       "name": "Arto Hellas", 
@@ -59,14 +69,14 @@ app.delete('api/persons/:id', (request, response) => {
   response.status(204).end()
 })
 
-app.post('/api/persons/:name', (request,response) => {
-  const randomPerson = {
-    id: Math.floor(Math.random() * 10000),
-    name: request.params.name,
-    number: `${Math.floor(Math.random() * 99)}-${Math.floor(Math.random() * 99)}-${Math.floor(Math.random() * 100000)}`
+app.post('/api/persons', (request,response) => {
+  const entry = {
+    id: generateId(),
+    name: request.body.name,
+    number: request.body.number
   }
-  persons.push(randomPerson)
-  response.json(randomPerson)
+  persons.push(entry)
+  response.json(entry)
 })
 
 app.listen(PORT, () => {
