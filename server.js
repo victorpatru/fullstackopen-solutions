@@ -2,7 +2,7 @@ const { response } = require('express')
 const express = require('express')
 const res = require('express/lib/response')
 const app = express()
-const PORT = 3001
+const PORT = 8000
 
 const persons = [
     { 
@@ -50,6 +50,13 @@ app.get('api/persons/:id', (request, response) => {
 
 app.get('/info', (request, response) => {
   response.send(`Phonebook has info for ${people.length} people <br> ${new Date()}`)
+})
+
+app.delete('api/persons/:id', (request, response) => {
+  const id = +request.params.id
+  persons = persons.filter(person => person.id !== id)
+
+  response.status(204).end()
 })
 
 app.listen(PORT, () => {
