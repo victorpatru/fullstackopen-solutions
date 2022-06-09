@@ -9,6 +9,12 @@ const PORT = 8000
 app.use(express.json())
 app.use(morgan('tiny'))
 
+morgan.token('info', (req, res) => {
+  return JSON.stringify(req.body)
+})
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :info'))
+
 const generateId = () => {
   const maxId = persons.length > 0
     ? Math.max(...persons.map(n => n.id))
