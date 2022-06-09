@@ -1,9 +1,10 @@
 const { response } = require('express')
 const express = require('express')
+const res = require('express/lib/response')
 const app = express()
 const PORT = 3001
 
-const people = [
+const persons = [
     { 
       "id": 1,
       "name": "Arto Hellas", 
@@ -32,6 +33,19 @@ app.get('/', (request, response) => {
 
 app.get('/api/persons', (request, response) => {
   response.json(persons)
+})
+
+app.get('api/persons/:id', (request, response) => {
+  // Holds the number of the person the user is trying to access
+  const id = +request.params.id
+  const person = persons.find(person => person.id == id)
+
+  if (person) {
+    response.json(person)
+  } else {
+    response.status(404).end()
+  }
+
 })
 
 app.get('/info', (request, response) => {
