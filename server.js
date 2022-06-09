@@ -75,6 +75,18 @@ app.post('/api/persons', (request,response) => {
     name: request.body.name,
     number: request.body.number
   }
+  // Check for empty body (both name and number)
+  if (!request.body.name || !request.body.number) {
+    return response.status(400).json({ 
+      error: 'content missing' 
+    })
+  } 
+  // Check for duplicate name
+  else if (persons.find(person => person.name == request.body.name)) {
+    return response.status(400).json({
+      error: 'name must be unique'
+    })
+  }
   persons.push(entry)
   response.json(entry)
 })
